@@ -206,28 +206,20 @@ public class MainActivity extends AppCompatActivity {
                     //Foto scattata da noi
                     case (1):
                         printLastImage();
-                        //...
+                        //Inserimento nel db
+                        //....
                         break;
 
                     //Foto presa da galleria
                     case (2):
-                        // Let's read picked image data - its URI
-                        Uri pickedImage = data.getData();
-                        // Let's read picked image path using content resolver
-                        String[] filePath = { MediaStore.Images.Media.DATA };
-                        Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
-                        cursor.moveToFirst();
-                        String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
-
-                        savePickedFile(bitmap);
-                        printLastImage();
-
-                        // At the end remember to close the cursor or you will end with the RuntimeException!
-                        cursor.close();
+                        Uri uri = data.getData();
+                        try {
+                            Bitmap btm = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                            savePickedFile(btm);
+                            printLastImage();
+                        }catch (Exception e){
+                            //Fai qualcosa
+                        }
                         break;
                 }
             }
@@ -238,13 +230,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Da sistemare!
     //----------------------------------------//
     //------Salva foto presa da galleria------//
     //----------------------------------------//
         private void savePickedFile(Bitmap imageToSave) {
             String root = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
-            File myDir = new File(root + "/req_images");
+            File myDir = new File(root);
             myDir.mkdirs();
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
@@ -269,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
     //----------------------------------------//
     //-------Stampa delle foto salvate--------//
     //----------------------------------------//
+        //Legge tutte le immagini
         private File[] readAllImages(){
             String path = getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
 
@@ -278,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Files", "Size: "+ files.length);
             return files;
         }
+        //Stampa tutte le immagini
         private void printAllImages(){
             File[] files = readAllImages();
 
@@ -293,6 +286,10 @@ public class MainActivity extends AppCompatActivity {
             File[] files = readAllImages();
             Bitmap myBitmap = BitmapFactory.decodeFile(files[files.length-1].getAbsolutePath());
             addToList(files[files.length-1].getName(), "Descrizione della foto", myBitmap);
+        }
+        //Stampa il bitmap passato (Solo per testing)
+        private void printThisBitmap(Bitmap myBitmap){
+            addToList("Print this bitmap", "Descrizione della foto", myBitmap);
         }
     //----------------------------------------//
     //----------------------------------------//
