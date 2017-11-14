@@ -16,7 +16,6 @@ public class Scontrino {
     private Bitmap img;
 
     public Scontrino(){
-
     }
 
     public Scontrino(String titolo, String descrizione, Bitmap img) {

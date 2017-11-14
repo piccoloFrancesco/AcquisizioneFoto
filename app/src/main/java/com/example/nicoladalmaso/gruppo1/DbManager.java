@@ -61,6 +61,24 @@ public class DbManager
 
     }
 
+    /**
+     * Metodo che invoca una query per la cancellazione del record
+     * @param id la chiave della riga da cancellare
+     * @return
+     */
+    public boolean delete(String id){
+        SQLiteDatabase db=dbhelper.getWritableDatabase();
+        try{
+            if (db.delete(DatabaseStrings.TBL_NAME, DatabaseStrings.FIELD_ID+"=?", new String[]{(id)})>0)
+                return true;
+            return false;
+        }//try
+        catch (SQLiteException sqle){
+            return false;
+        }//catch
+    }//delete
+
+
     public Cursor query()
     {
         Cursor crs=null;

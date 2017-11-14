@@ -1,12 +1,14 @@
 package com.example.nicoladalmaso.gruppo1;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -37,5 +39,4 @@ public class CustomAdapter extends ArrayAdapter<Scontrino> {
         img.setImageBitmap(c.getImg());
         return convertView;
     }
-
 }
