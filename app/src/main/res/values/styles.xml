@@ -16,5 +16,11 @@
         <item name="contentPaddingRight">16dp</item>
         <item name="cardBackgroundColor">#fff</item>
     </style>
+    <style name="CropTheme" parent="@style/Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="titleTextColor">#FFF</item>
+        <item name="actionMenuTextColor">#FFF</item>
+        <item name="android:textColorPrimary">#FFF</item>
+    </style>
 
 </resources>
