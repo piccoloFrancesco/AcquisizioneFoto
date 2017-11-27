@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean isFabOpen = false;
     static final int REQUEST_TAKE_PHOTO = 1;
     public static final int PICK_PHOTO_FOR_AVATAR = 2;
-    String mCurrentPhotoPath;
+    String tempPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab1 = (FloatingActionButton)findViewById(R.id.fab1);
         fab2 = (FloatingActionButton)findViewById(R.id.fab2);
+
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
@@ -155,15 +156,14 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private File createImageFile() throws IOException {
-        // Create an image file name
+
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 "temp",  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
+        tempPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -205,21 +205,18 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                //Display an error
-                return;
-            }
             switch (requestCode) {
                 /**lazzarin
                  * Gestisce l'intent prodotto dalla fotocamera,andando ad eliminare il file temporaneo
                  */
                 case(REQUEST_TAKE_PHOTO):
                     BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                    Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath,bmOptions);
-                    savePickedFile(bitmap);
+                    Bitmap photo = BitmapFactory.decodeFile(tempPhotoPath,bmOptions);
+                    savePickedFile(photo);
                     deleteTempFiles();
                     clearAllImages();
                     printAllImages();
+                    Log.d("Foto da camera",""+ resultCode);
                     break;
 
                 //Dal Maso
@@ -244,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
                     printAllImages();
                     break;
             }
-        }
-    }
+        }}
+
 
     //
     //

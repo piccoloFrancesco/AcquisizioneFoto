@@ -2,6 +2,7 @@ package com.example.nicoladalmaso.gruppo1;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +102,15 @@ public class CustomAdapter extends ArrayAdapter<Scontrino> {
                 CropImage.activity(Uri.fromFile(files[pos])).start(MainActivity.this);*/
             }//onClick
         });
+        img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pos = Integer.parseInt(v.getTag().toString());
+                path=getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString();
+                viewFullImage(pos,path);
+
+            }
+        });
         return convertView;
     }
     /**PICCOLO_Edit by Dal Maso
@@ -117,4 +128,20 @@ public class CustomAdapter extends ArrayAdapter<Scontrino> {
                 .start(((MainActivity)context));
         //files[toCrop].delete();
     }//cropFile
+    /**LAZZARIN
+     * Metodo che permette la visualizzazione intera di una foto
+     */
+    public void viewFullImage(int toView,String path)
+    {   File directory = new File(path);
+        File[] files = directory.listFiles();
+        Intent currentIntent=new Intent();
+        currentIntent.setAction(Intent.ACTION_VIEW);
+        currentIntent.setDataAndType(Uri.fromFile(files[pos]), "image/*");
+        (context).startActivity(currentIntent);
+
+    }
+
+
+
+
 }
